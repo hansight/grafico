@@ -1,0 +1,28 @@
+{
+  "name": "grafico",
+  "version": "0.0.0",
+  "description": "The font-end of Elasticsearch with interactive and highly customized charts or graph.",
+  "main": "index.html",
+  "directories": {
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hansight/grafico.git"
+  },
+  "keywords": [
+    "Elasticsearch",
+    "interactive",
+    "customized",
+    "charts",
+    "graph"
+  ],
+  "author": "Bill Xue <http://xueeinstein.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hansight/grafico/issues"
+  },
+  "homepage": "https://github.com/hansight/grafico"
+}

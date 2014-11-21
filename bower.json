@@ -1,0 +1,21 @@
+{
+  "name": "grafico",
+  "version": "0.0.0",
+  "homepage": "https://github.com/hansight/grafico",
+  "authors": [
+    "Bill Xue <http://xueeinstein.me>"
+  ],
+  "description": "The font-end of Elasticsearch with interactive and highly customized charts or graph.",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1"
+  }
+}
