@@ -1,0 +1,17 @@
+/* Navbar */
+
+.navbar {
+  color: #E5E5E5;
+  text-align: center;
+  opacity: .97;
+  z-index: 10000;
+  border-radius: 0px;
+  padding: 20px 0px;
+  margin-bottom: 30px;
+  background-color: #fff;
+  /*position: fixed;*/
+}
+
+.navbar-toggle .icon-bar {
+	background-color: #444;
+}
