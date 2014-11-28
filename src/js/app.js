@@ -2,12 +2,16 @@
 
 angular.module('grafico', [
         'ngRoute',
+        'controllers',
         'graph.controller',
-        'monitor.controller'
+        'monitor.controller',
+        'search.controller',
+        'elasticjs.service'
     ])
     .config(['$routeProvider', function($routeProvider) {
         $routeProvider.when('/', {
-            templateUrl: 'partials/main.html'
+            templateUrl: 'partials/main.html',
+            controller: 'mainController'
         });
         $routeProvider.when('/graph', {
             templateUrl: 'partials/graph.html',
@@ -21,3 +25,4 @@ angular.module('grafico', [
             redirectTo: '/'
         });
     }]);
+

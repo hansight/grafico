@@ -4,76 +4,21 @@
     <div class="container" data-ng-show="error">
         Error: {{error}}
     </div>
+    <div class="container" ng-controller="searchController">
+        <div class="row-fluid">
+            Input SQL to search
+            <span class="span3">
+                    <input class="input-block-level" ng-model="queryTerm" type="text">
+                </span>&nbsp;
+            <button ng-click="search()" class="btn" type="button">Search</button>
+        </div>
 
-    <section class="dark" data-ng-show="!error && data.length">
-        <div class="container">
-            <div id="mapping" class="row-fluid">
-                <div>
-                    <h3>Map your Dimensions
-							<a data-toggle="tooltip"
-							data-title="Clear all"
-							ng-click="model.clear()" class="pull-right light"><i class="fa fa-trash-o"></i></a>
-						</h3>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-3">
-                        <div draggable>
-                            <ul class="list-unstyled dimensions-list">
-                                <li class="dimension" data-dimension="{{dimension}}" ng-repeat="dimension in metadata track by $index">
-                                    <span class="dimension-key">{{ dimension.key }}</span>
-                                    <span class="dimension-type">{{dimension.type}}</span>
-                                    <span class="dimension-icon pull-right"><i class="fa fa-bars"></i></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-9 col-md-9">
-                        <div class="sticky">
-                            <div class="row" group every="3" watch="model">
-
-                                <div class="col-lg-4 col-md-4 dimensions-wrapper" ng-repeat="dimension in model.dimensions().values() track by $index" ng-init="open=false">
-
-                                    <div class="dimensions-model">
-
-                                        <!--<div class="dimension-multiple">
-
-										<i class="fa fa-tag"
-										data-toggle="tooltip"
-										data-title="You can drag only one dimension here"
-										data-ng-show="!dimension.multiple()"></i>
-
-										<i class="fa fa-tags"
-										data-toggle="tooltip"
-										data-title="You can drag more than one dimension here"
-										data-ng-show="dimension.multiple()"></i>
-									</div>-->
-
-                                        <i class="fa fa-asterisk dimension-required" data-toggle="tooltip" data-title="Required" data-ng-show="dimension.required()"></i>
-
-                                        <!--<a class="dimension-info"
-									data-toggle="tooltip"
-									data-title="Show description"
-									ng-click="open = !open" ng-show="dimension.description()">
-									<i class="fa fa-info dimension-info-toggle"></i>
-									</a>-->
-
-                                        <p class="dimension-title">{{dimension.title()}}</p>
-                                        <ul sortable title="dimension.title()" value="dimension.value" multiple="dimension.multiple()" types="dimension.types()" class="dimensions-container list-unstyled">
-                                        </ul>
-
-                                    </div>
-
-                                    <!--<div class="text-muted small" ng-show="dimension.required() && dimension.required() - dimension.value.length > 0">
-							{{dimension.required() - dimension.value.length}} more dimension(s) required
-						</div>-->
-                                </div>
-                            </div>
-                        </div>
-                        <!--<div class="text-muted" ng-show="!model.isValid()" ng-bind-html="model.instruction()"></div>-->
-                    </div>
-                </div>
+        <div class="row-fluid">
+            <div class="span4">
+                <li ng-repeat="doc in results.hits.hits">
+                    {{ doc._source.Title }}
+                </li>
             </div>
         </div>
-    </section>
+    </div><!-- end of search section -->
 </div>

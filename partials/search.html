@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row-fluid">
+        Input SQL to search
+        <span class="span3">
+                    <input class="input-block-level" ng-model="queryTerm" type="text">
+                </span>&nbsp;
+        <button ng-click="search()" class="btn" type="button">Search</button>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span4">
+            <li ng-repeat="doc in results.hits.hits">
+                {{ doc._source.Title }}
+            </li>
+        </div>
+    </div>
+</div>
