@@ -1,0 +1,21 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div bindonce class="modal-body">
+                <div class="row-fluid">
+                    <h4>Select Panel Type</h4>
+                    <form class="form-inline">
+                        <select class="input-medium" ng-model="panel.type" ng-options="panelType for panelType in dashboard.availablePanels|stringSort"></select>
+                    </form>
+                    <div ng-show="!(_.isUndefined(panel.type))">
+                        <div add-panel="{{panel.type}}"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button ng-show="panel.type" ng-click="editSave(dashboard);add_panel(panel);reset_panel();$hide();" class="btn btn-success" ng-disabled="panel.loadingEditor">Add Panel</button>
+                <button type="button" class="btn btn-danger" ng-click="reset_panel();close_edit();$hide();">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
