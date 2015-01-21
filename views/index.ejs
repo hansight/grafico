@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Keywords" content="Grafico, visualization, data, interactive, graphics">
+    <meta name="Description" content="Grafico, a highly customized and interactive font-end of Elasticsearch.">
+
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+  </head>
+  <body>
+    <nav class="navbar" role="navigation" id="grafico-nav">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#grafico-navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/#"><%= title %></a>
+            </div>
+
+            <div class="collapse navbar-collapse navbar-right" id="grafico-navbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="about.html">About</a>
+                    </li>
+                    <li><a href="Developer-Guide.html">Developer Guide</a>
+                    </li>
+                    <li><a href="API-Reference.html">API Reference</a>
+                    </li>
+                    <li><a href="FAQs.html">FAQ</a>
+                    </li>
+                    <li><a href="https://github.com/hansight/grafico">Github</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default"><a href="/#graph" >Graph</a></button>
+            <button type="button" class="btn btn-default"><a href="/#monitor">Monitor</a></button>
+        </div>
+    </div>
+
+    <div ng-view class="wrap"></div>
+
+    <footer id="grafico-footer">
+        <div class="container">
+            <div class="col-lg-6">
+                <p><strong>Grafico</strong> is a project by <a href="http://www.hansight.com">Hansight</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- jquery -->
+    <script type="text/javascript" src="/bower_components/jquery/dist/jquery.js"></script>
+    <!-- bootstrap -->
+    <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- angular.js -->
+    <script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="/bower_components/angular-route/angular-route.min.js"></script>
+
+    <!-- parse sql -->
+    <script type="text/javascript" src="/bower_components/simple-sql-parser/simpleSqlParser.js"></script>
+
+    <script type="text/javascript" src="/assets/js/app.js"></script>
+    <script type="text/javascript" src="/assets/js/elasticquery.js"></script>
+    <script type="text/javascript" src="/assets/js/controllers/mainController.js"></script>
+    <script type="text/javascript" src="/assets/js/controllers/graphController.js"></script>
+    <script type="text/javascript" src="/assets/js/controllers/monitorController.js"></script>
+    <script type="text/javascript" src="/assets/js/controllers/searchController.js"></script>
+  </body>
+</html>
