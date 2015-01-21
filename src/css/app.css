@@ -339,6 +339,14 @@ h4 {
     color: black;
 }
 
+
+dashboard-grid {
+    display: block;
+    margin: 0;
+    padding: 5px;
+}
+
+
 .gs-w .panel {
     border: 0px;
     height: 100%;

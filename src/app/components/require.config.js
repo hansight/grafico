@@ -23,7 +23,6 @@ require.config({
     'angular-dragdrop':       '../vendor/angular-dragdrop/src/angular-dragdrop',
     'angular-strap':          '../vendor/angular-strap/dist/angular-strap',
     'angular-sanitize':       '../vendor/angular-sanitize/angular-sanitize',
-    'angular-gridster':       '../vendor/angular-gridster/src/angular-gridster',
     'spectrum':               '../vendor/spectrum/spectrum',
     'angular-spectrum-colorpicker': '../vendor/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker',
     bindonce:                 '../vendor/angular-bindonce/bindonce',
@@ -68,7 +67,7 @@ require.config({
     // simple dependency declaration
     //
     'jquery-ui':            ['jquery', 'css!../vendor/jquery-ui/themes/ui-lightness/jquery-ui.css'],
-    'jquery.gridster':      ['jquery', 'css!../vendor/gridster/dist/jquery.gridster.css', 'css!../vendor/angular-gridster/dist/angular-gridster.min.css'],
+    'jquery.gridster':      ['jquery', 'css!../vendor/gridster/dist/jquery.gridster.css'],
 
     'angular-sanitize':     ['angular'],
     'angular-cookies':      ['angular'],
@@ -78,8 +77,7 @@ require.config({
     'angular-resource':     ['angular'],
     'angular-route':        ['angular'],
     'angular-touch':        ['angular'],
-    'angular-gridster':     ['angular', 'jquery.gridster'],
- 
+
     'bindonce':             ['angular'],
     'angular-strap':        ['angular', 'bootstrap'],
     'spectrum':             ['css!../vendor/spectrum/spectrum.css'],

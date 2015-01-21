@@ -9,10 +9,10 @@ define([
 
         angular
             .module('kibana.directives')
-            .directive('dashboardGrid', function ($compile/*, Notifier*/) {
+            .directive('dashboardGrid', function ($compile, dashboard/*, Notifier*/) {
         return {
             restrict: 'E',
-            //require: '^dashboardApp', // must inherit from the dashboardApp
+            //require: '^dashboard', // must inherit from the dashboardApp
             link: function ($scope, $el) {
                 //var notify = new Notifier();
                 var $container = $el;
@@ -22,7 +22,7 @@ define([
                 var $body = $(document.body);
 
                 // appState from controller
-                var $state = dashboard.current;
+                //var $state = ;
 
                 var gridster; // defined in init()
 
@@ -50,7 +50,9 @@ define([
                         }
                     }).data('gridster');
 
-                    $scope.$watchCollection('state.panels', function (panels) {
+                    $scope.$watchCollection('dashboard.current.panels', function (panels) {
+                        if (_.isUndefined(dashboard.current.panels)) return;
+
                         var currentPanels = gridster.$widgets.toArray().map(function (el) {
                             return getPanelFor(el);
                         });
@@ -65,7 +67,7 @@ define([
                         if (added.length) added.forEach(addPanel);
 
                         // ensure that every panel can be serialized now that we are done
-                        $state.panels.forEach(makePanelSerializeable);
+                        dashboard.current.panels.forEach(makePanelSerializeable);
 
                         // alert interested parties that we have finished processing changes to the panels
                         // TODO: change this from event based to calling a method on dashboardApp
@@ -129,19 +131,21 @@ define([
                 var addPanel = function (panel) {
                     _.defaults(panel, {
                         size_x: 3,
-                        size_y: 2
+                        size_y: 2,
+                        row:    1,
+                        col:    1
                     });
 
                     // ignore panels that don't have vis id's
-                    if (!panel.visId) throw new Error('missing visId on panel');
+                    if (!panel.id) throw new Error('missing visId on panel');
 
                     panel.$scope = $scope.$new();
                     panel.$scope.panel = panel;
 
-                    panel.$el = $compile('<li><dashboard-panel></li>')(panel.$scope);
+                    panel.$el = $compile('<li><div ng-cloak ng-hide="panel.hide" kibana-panel type=\'panel.type\' class="panel nospace"></div><div ng-show="panel.editMode" ng-include src="\'app/partials/panel-editor.html\'"></div></li>')(panel.$scope);
 
                     // tell gridster to use the widget
-                    gridster.add_widget(panel.$el, panel.size_x, panel.size_y, panel.col, panel.row);
+                    gridster.add_widget(panel.$el, panel.size_x, panel.size_y);
 
                     // update size/col/etc.
                     refreshPanelStats(panel);

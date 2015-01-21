@@ -14,7 +14,6 @@ define([
   'angular-dragdrop',
   'angular-cookies',
   'extend-jquery',
-  'angular-gridster',
   'angular-spectrum-colorpicker',
   'bindonce',
 ],
@@ -118,7 +117,6 @@ function (angular, $, _, appLevelRequire) {
     'ngSanitize',
     'ngDragDrop',
     'ngCookies',
-    'gridster',
     'kibana',
     'pasvaz.bindonce',
     'angularSpectrumColorpicker'

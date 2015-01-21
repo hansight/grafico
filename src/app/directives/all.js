@@ -10,6 +10,6 @@ define([
   //'./confirmClick',
   //'./esVersion',
   './config-modal',
-  //'./grid'
+  './grid'
   //'./resizable'
 ], function () {});
