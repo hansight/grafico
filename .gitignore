@@ -2,3 +2,4 @@ doc/
 tmp/
 bower_components/
 node_modules/
+src/vendor/
