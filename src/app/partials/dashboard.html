@@ -1,12 +1,5 @@
-<div class="panels">
-    <gridster options="dashboard.current.gridster.options">
-        <gridster-item ng-repeat="panel in dashboard.current.panels track by panel.id" options="panel.gridsterOptions" id="{{panel.id}}" ng-style="{'background-color':panel.bgColor}" ng-hide="panel.remove">
-            <div ng-cloak ng-hide="panel.hide" kibana-panel type='panel.type' class="panel nospace"></div>
-            <div ng-show="panel.editMode" ng-include src="'app/partials/panel-editor.html'"></div>
-        </gridster-item>
-    </gridster>
-    <div class="bgSuccess row-tab" config-modal="app/partials/dashboard-editor.html" kbn-model="dashboard">
-        <i class="icon-plus-sign" bs-tooltip="'Add Panel'" data-placement="right"></i>
-        <br>
-    </div>
+<dashboard-grid></dashboard-grid>
+<div class="bgSuccess row-tab" config-modal="app/partials/dashboard-editor.html" kbn-model="dashboard">
+    <i class="icon-plus-sign" bs-tooltip="'Add Panel'" data-placement="right"></i>
+    <br>
 </div>

@@ -50,14 +50,7 @@ function (angular, $, kbn, _, config, moment, Modernizr) {
         warm_fields: true
       },
       refresh: false,
-      gridster: {
-        options: {
-          //widget_margins: [5, 5],
-          //widget_base_dimensions: [480, 240]
-          //min_cols: 12,
-          //max_cols: 12
-        }
-      },
+
       panels: []
     };
 
