@@ -1,0 +1,35 @@
+    <div class="editor-row">
+        <div class="section">
+            <h5>Index Settings</h5>
+            <div ng-show="datasource.index.interval != 'none'" class="row-fluid">
+                <div class="editor-option">
+                    <p class="small">
+                        Time stamped indices use your selected time range to create a list of
+                        indices that match a specified timestamp pattern. This can be very
+                        efficient for some data sets (eg, logs) For example, to match the
+                        default logstash index pattern you might use
+                        <code>[logstash-]YYYY.MM.DD</code>. The [] in "[logstash-]" are
+                        important as they instruct Kibana not to treat those letters as a
+                        pattern. You may also specify multiple indices by seperating them with a comma(,).
+                        For example <code>[web-]YYYY.MM.DD,[mail-]YYYY.MM.DD</code>
+                        Please also note that indices should rollover at midnight <strong>UTC</strong>.
+                    </p>
+                    <p class="small">
+                        See <a href="http://momentjs.com/docs/#/displaying/format/">http://momentjs.com/docs/#/displaying/format/</a>
+                        for documentation on date formatting.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="editor-row">
+        <div class="section">
+            <div class="editor-option">
+                <h6>Timestamping</h6><select class="input-small" ng-model="datasource.index.interval" ng-options="f for f in ['none','hour','day','week','month','year']"></select>
+            </div>
+            <div class="editor-option" ng-show="datasource.index.interval != 'none'">
+                <h6>Index pattern <small>Absolutes in []</small></h6>
+                <input type="text" class="input-large" ng-model="datasource.index.pattern">
+            </div>
+        </div>
+    </div>

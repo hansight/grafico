@@ -1,0 +1,47 @@
+<div class="modal" tabindex="-1" role="dialog" ng-controller="SystemEditorCtrl">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div bindonce class="modal-body">
+
+                <div class="row">
+                <div class="col-xs-2">
+                    <h4 class="text-left">Data Sources</h4>
+
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="ds in datasources.sources" ng-class="{'active':datasource == ds}" ng-click="$parent.datasource = ds">{{ds.name}}</li>
+                </ul>
+
+                <div class="btn-group" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false" bs-tooltip="'Add one data source'"  data-placement="bottom">
+                            <span class='glyphicon-plus'></span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ng-repeat="type in datasources.types" ng-click="addSource(type)">{{type}}</a></li>
+                        </ul>
+                    </div>
+                    <button type="button" class="btn btn-default btn-sm" ng-click="removeSelected()" ng-disabled="_.isUndefined(datasource)" bs-tooltip="'Remove this data source'"  data-placement="bottom"><span class='glyphicon-minus'></span></button>
+                </div>
+
+                </div>
+
+                <div class="col-xs-10" >
+                    <div ng-show="_.isUndefined(datasource)"><p class="large text-center">No data sources available, please add one first.</p></div>
+                    <div ng-repeat="type in datasources.types" ng-show="!_.isUndefined(datasource) && type == datasource.type">
+                        <div><h5 style="display: inline;">Name: </h5><input class="input-large" type="text" ng-model="datasource.name"></div>
+                        <div ng-include src="'app/datasources/' + type + '/editor.html'" ></div>
+
+                    </div>
+                </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button ng-show="true" ng-click="editSave(datasources);$hide();" class="btn btn-success" ng-enabled="true">OK</button>
+                <button type="button" class="btn btn-danger" ng-click="$hide();">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

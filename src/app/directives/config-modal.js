@@ -7,7 +7,7 @@ function (angular,_) {
 
   angular
     .module('kibana.directives')
-    .directive('configModal', function($modal,$q) {
+    .directive('configModal', function($modal, $q) {
       return {
         restrict: 'A',
         link: function(scope, elem, attrs) {
@@ -36,6 +36,7 @@ function (angular,_) {
               persist: true,
               show: false,
               scope: tmpScope,
+              backdrop: 'static',
               keyboard: false
             });
 

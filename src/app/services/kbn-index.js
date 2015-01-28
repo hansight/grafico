@@ -9,7 +9,7 @@ function (angular, _, config, moment) {
 
   var module = angular.module('kibana.services');
 
-  module.service('kbnIndex', function($http, alertSrv, ejsResource) {
+  module.service('kbnIndex', function($http, alertSvc, ejsResource) {
     // returns a promise containing an array of all indices matching the index
     // pattern that exist in a given range
     this.indices = function(from,to,pattern,interval) {
@@ -43,10 +43,10 @@ function (angular, _, config, moment) {
             return [];
           }
           else if(p === 0) {
-            alertSrv.set('Error',"Could not contact Elasticsearch at "+ejs.config.server+
+            alertSvc.set('Error',"Could not contact Elasticsearch at "+ejs.config.server+
               ". Please ensure that Elasticsearch is reachable from your system." ,'error');
           } else {
-            alertSrv.set('Error',"Could not reach "+ejs.config.server+"/_aliases. If you"+
+            alertSvc.set('Error',"Could not reach "+ejs.config.server+"/_aliases. If you"+
               " are using a proxy, ensure it is configured correctly",'error');
           }
           return [];

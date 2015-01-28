@@ -7,7 +7,7 @@ function (angular, _) {
 
   var module = angular.module('kibana.services');
 
-  module.service('alertSrv', function($timeout) {
+  module.service('alertSvc', function($timeout) {
     var self = this;
 
     // List of all alert objects

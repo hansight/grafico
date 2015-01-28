@@ -45,7 +45,7 @@ function (angular,$) {
                   '<i class="icon-windows"></i>'+
                 '</a>'+
                 '<ul class="dropdown-menu" style="padding:0px">'+
-                  '<li><a class="link" ng-click="panel.type = panelType" ng-repeat="panelType in dashboard.availablePanels|stringSort">{{panelType}}</a></li>'+
+                  '<li><a class="link" ng-click="panel.type = panelType" ng-repeat="panelType in dashboard.panelTypes|stringSort">{{panelType}}</a></li>'+
                 '</ul>' +
               '</span>' +
             '</span>' +

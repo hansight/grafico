@@ -1,11 +1,11 @@
 define([
-  './alert-srv',
-  './dashboard-srv',
+  './alert-svc',
+  './dashboard-svc',
   './fields',
   './filter-srv',
   './kbn-index',
   './query-srv',
   './timer',
-  './es-version'
+  './datasources'
 ],
 function () {});

@@ -11,7 +11,7 @@ function (angular, config, _) {
   var module = angular.module('kibana.controllers');
 
   module.controller('DashboardCtrl', function(
-    $scope, $route, ejsResource, fields, dashboard, alertSrv, esVersion, kbnVersion) {
+    $scope, $route, ejsResource, fields, dashboard, alertSvc, kbnVersion, datasources) {
 
     $scope.Math = Math;
 
@@ -31,18 +31,18 @@ function (angular, config, _) {
       // Make stuff, including lodash available to views
       $scope._ = _;
       $scope.dashboard = dashboard;
-      $scope.dashAlerts = alertSrv;
-      $scope.esVersion = esVersion;
 
+      $scope.alerts = alertSvc;
       // Clear existing alerts
-      alertSrv.clearAll();
+      alertSvc.clearAll();
 
       // Provide a global list of all seen fields
-      $scope.fields = fields;
+      $scope.datasources = datasources;
+
       //$scope.reset_row();
       $scope.reset_panel();
-
-      $scope.ejs = ejsResource(config.elasticsearch);
+      //
+      //$scope.ejs = ejsResource(config.elasticsearch);
     };
 
     $scope.isPanel = function(obj) {
@@ -52,22 +52,6 @@ function (angular, config, _) {
         return false;
       }
     };
-
-    //$scope.add_row = function(dash,row) {
-    //  dash.rows.push(row);
-    //};
-    //
-    //$scope.reset_row = function() {
-    //  $scope.row = {
-    //    title: '',
-    //    height: '150px',
-    //    editable: true
-    //  };
-    //};
-    //
-    //$scope.row_style = function(row) {
-    //  return { 'min-height': row.collapse ? '5px' : row.height };
-    //};
 
     $scope.panel_path = function(type) {
       if(type) {
@@ -86,11 +70,11 @@ function (angular, config, _) {
       }
     };
 
-    $scope.pulldownTabStyle = function(i) {
-      var classes = ['bgPrimary','bgSuccess','bgWarning','bgDanger','bgInverse','bgInfo'];
-      i = i%classes.length;
-      return classes[i];
-    };
+    //$scope.pulldownTabStyle = function(i) {
+    //  var classes = ['bgPrimary','bgSuccess','bgWarning','bgDanger','bgInverse','bgInfo'];
+    //  i = i%classes.length;
+    //  return classes[i];
+    //};
 
     $scope.setEditorTabs = function(panelMeta) {
       $scope.editorTabs = ['General','Panel'];
@@ -150,7 +134,7 @@ function (angular, config, _) {
     };
 
     $scope.add_panel = function(panel) {
-      $scope.dashboard.current.panels.push(panel);
+      $scope.dashboard.state.panels.push(panel);
     };
 
 

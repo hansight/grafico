@@ -8,7 +8,7 @@ function (angular, _, config) {
 
   var module = angular.module('kibana.services');
 
-  module.service('fields', function(dashboard, $rootScope, $http, esVersion, alertSrv, ejsResource) {
+  module.service('fields', function(dashboard, $rootScope, $http, alertSvc, ejsResource) {
 
     // Save a reference to this
     var self = this;
@@ -23,7 +23,7 @@ function (angular, _, config) {
     // we've already seen.
     //
     $rootScope.$watch(function(){return dashboard.indices;},function(n) {
-      if(!_.isUndefined(n) && n.length && dashboard.current.index.warm_fields) {
+      if(!_.isUndefined(n) && n.length && dashboard.state.index.warm_fields) {
         // Only get the mapping for indices we don't know it for
         var indices = _.difference(n,_.keys(self.indices));
         // Only get the mapping if there are new indices
@@ -51,10 +51,10 @@ function (angular, _, config) {
       var request = ejs.client.get('/' + indices.join(',') + "/_mapping",
         undefined, undefined, function(data, status) {
           if(status === 0) {
-            alertSrv.set('Error',"Could not contact Elasticsearch at "+ejs.config.server+
+            alertSvc.set('Error',"Could not contact Elasticsearch at "+ejs.config.server+
               ". Please ensure that Elasticsearch is reachable from your system." ,'error');
           } else {
-            alertSrv.set('Error',"No index found at "+ejs.config.server+"/" +
+            alertSvc.set('Error',"No index found at "+ejs.config.server+"/" +
               indices.join(',')+"/_mapping. Please create at least one index."  +
               "If you're using a proxy ensure it is configured correctly.",'error');
           }
@@ -63,7 +63,7 @@ function (angular, _, config) {
       // Flatten the mapping of each index into dot notated keys.
       return request.then(function(p) {
         var mapping = {};
-        return esVersion.gte('1.0.0.RC1').then(function(version) {
+
           _.each(p, function(indexMap,index) {
             mapping[index] = {};
             _.each((version ? indexMap.mappings : indexMap), function (typeMap,type) {
@@ -72,7 +72,6 @@ function (angular, _, config) {
           });
           return mapping;
         });
-      });
     };
 
     // This should understand both the 1.0 format and the 0.90 format for mappings. Ugly.

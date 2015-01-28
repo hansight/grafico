@@ -50,8 +50,8 @@ define([
                         }
                     }).data('gridster');
 
-                    $scope.$watchCollection('dashboard.current.panels', function (panels) {
-                        if (_.isUndefined(dashboard.current.panels)) return;
+                    $scope.$watchCollection('dashboard.state.panels', function (panels) {
+                        if (_.isUndefined(dashboard.state.panels)) return;
 
                         var currentPanels = gridster.$widgets.toArray().map(function (el) {
                             return getPanelFor(el);
@@ -67,7 +67,7 @@ define([
                         if (added.length) added.forEach(addPanel);
 
                         // ensure that every panel can be serialized now that we are done
-                        dashboard.current.panels.forEach(makePanelSerializeable);
+                        dashboard.state.panels.forEach(makePanelSerializeable);
 
                         // alert interested parties that we have finished processing changes to the panels
                         // TODO: change this from event based to calling a method on dashboardApp

@@ -24,7 +24,7 @@ function (angular, app, _, require) {
   app.useModule(module);
 
   module.controller('visualizer', function($rootScope, $scope, $modal, $q, $compile, $timeout,
-                                           fields, querySrv, dashboard, filterSrv) {
+                                           fields, dashboard) {
     $scope.panelMeta = {
       status  : "Stable",
       description : "A static text panel that can use plain text, markdown, or (sanitized) HTML"

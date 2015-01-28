@@ -10,7 +10,7 @@ define([
 
   module.service('filterSrv', function(dashboard, ejsResource, $rootScope, $timeout) {
     // Create an object to hold our service state on the dashboard
-    dashboard.current.services.filter = dashboard.current.services.filter || {};
+    dashboard.state.services.filter = dashboard.state.services.filter || {};
 
     // Defaults for it
     var _d = {
@@ -27,20 +27,20 @@ define([
     // Call this whenever we need to reload the important stuff
     this.init = function() {
       // Populate defaults
-      _.defaults(dashboard.current.services.filter,_d);
+      _.defaults(dashboard.state.services.filter,_d);
 
-      _.each(dashboard.current.services.filter.list,function(f) {
+      _.each(dashboard.state.services.filter.list,function(f) {
         self.set(f,f.id,true);
       });
 
     };
 
     this.ids = function() {
-      return dashboard.current.services.filter.ids;
+      return dashboard.state.services.filter.ids;
     };
 
     this.list = function() {
-      return dashboard.current.services.filter.list;
+      return dashboard.state.services.filter.list;
     };
 
     // This is used both for adding filters and modifying them.
@@ -54,8 +54,8 @@ define([
       });
 
       if(!_.isUndefined(id)) {
-        if(!_.isUndefined(dashboard.current.services.filter.list[id])) {
-          _.extend(dashboard.current.services.filter.list[id],filter);
+        if(!_.isUndefined(dashboard.state.services.filter.list[id])) {
+          _.extend(dashboard.state.services.filter.list[id],filter);
           _r = id;
         } else {
           _r = false;
@@ -71,8 +71,8 @@ define([
             mandate: 'must'
           };
           _.defaults(filter,_filter);
-          dashboard.current.services.filter.list[_id] = filter;
-          dashboard.current.services.filter.ids.push(_id);
+          dashboard.state.services.filter.list[_id] = filter;
+          dashboard.state.services.filter.ids.push(_id);
           _r = _id;
         }
       }
@@ -84,9 +84,9 @@ define([
           dashboard.refresh();
         },0);
       }
-      dashboard.current.services.filter.ids = dashboard.current.services.filter.ids =
-        _.intersection(_.map(dashboard.current.services.filter.list,
-          function(v,k){return parseInt(k,10);}),dashboard.current.services.filter.ids);
+      dashboard.state.services.filter.ids = dashboard.state.services.filter.ids =
+        _.intersection(_.map(dashboard.state.services.filter.list,
+          function(v,k){return parseInt(k,10);}),dashboard.state.services.filter.ids);
       $rootScope.$broadcast('filter');
 
       return _r;
@@ -94,10 +94,10 @@ define([
 
     this.remove = function(id,noRefresh) {
       var _r;
-      if(!_.isUndefined(dashboard.current.services.filter.list[id])) {
-        delete dashboard.current.services.filter.list[id];
+      if(!_.isUndefined(dashboard.state.services.filter.list[id])) {
+        delete dashboard.state.services.filter.list[id];
         // This must happen on the full path also since _.without returns a copy
-        dashboard.current.services.filter.ids = dashboard.current.services.filter.ids = _.without(dashboard.current.services.filter.ids,id);
+        dashboard.state.services.filter.ids = dashboard.state.services.filter.ids = _.without(dashboard.state.services.filter.ids,id);
         _r = true;
       } else {
         _r = false;
@@ -133,10 +133,10 @@ define([
       var added_a_filter = false;
 
       _.each(ids,function(id) {
-        if(dashboard.current.services.filter.list[id].active) {
+        if(dashboard.state.services.filter.list[id].active) {
           added_a_filter = true;
 
-          switch(dashboard.current.services.filter.list[id].mandate)
+          switch(dashboard.state.services.filter.list[id].mandate)
           {
           case 'mustNot':
             bool.mustNot(self.getEjsObj(id));
@@ -157,7 +157,7 @@ define([
     };
 
     this.getEjsObj = function(id) {
-      return self.toEjsObj(dashboard.current.services.filter.list[id]);
+      return self.toEjsObj(dashboard.state.services.filter.list[id]);
     };
 
     this.toEjsObj = function (filter) {
@@ -192,12 +192,12 @@ define([
     };
 
     this.getByType = function(type,inactive) {
-      return _.pick(dashboard.current.services.filter.list,self.idsByType(type,inactive));
+      return _.pick(dashboard.state.services.filter.list,self.idsByType(type,inactive));
     };
 
     this.idsByType = function(type,inactive) {
       var _require = inactive ? {type:type} : {type:type,active:true};
-      return _.pluck(_.where(dashboard.current.services.filter.list,_require),'id');
+      return _.pluck(_.where(dashboard.state.services.filter.list,_require),'id');
     };
 
     // TOFIX: Error handling when there is more than one field
@@ -207,7 +207,7 @@ define([
 
     // Parse is used when you need to know about the raw filter
     this.timeRange = function(parse) {
-      var _t = _.last(_.where(dashboard.current.services.filter.list,{type:'time',active:true}));
+      var _t = _.last(_.where(dashboard.state.services.filter.list,{type:'time',active:true}));
       if(_.isUndefined(_t)) {
         return false;
       }
@@ -229,10 +229,10 @@ define([
     };
 
     var nextId = function() {
-      var idCount = dashboard.current.services.filter.ids.length;
+      var idCount = dashboard.state.services.filter.ids.length;
       if(idCount > 0) {
         // Make a sorted copy of the ids array
-        var ids = _.sortBy(_.clone(dashboard.current.services.filter.ids),function(num){
+        var ids = _.sortBy(_.clone(dashboard.state.services.filter.ids),function(num){
           return num;
         });
         return kbn.smallestMissing(ids);

@@ -1,5 +1,4 @@
 define([
   './dashboard-ctrl',
-  './pulldown-ctrl',
-  './dashboard-loader'
+  './system-editor-ctrl'
 ], function () {});

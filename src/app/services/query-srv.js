@@ -9,16 +9,16 @@ function (angular, _, config, kbn) {
 
   var module = angular.module('kibana.services');
 
-  module.service('querySrv', function(dashboard, ejsResource, filterSrv, esVersion, $q) {
+  module.service('querySrv', function(dashboard, ejsResource, $q) {
 
     // Save a reference to this
     var self = this;
 
     // Create an object to hold our service state on the dashboard
-    dashboard.current.services.query = dashboard.current.services.query || {};
-    _.defaults(dashboard.current.services.query,{
+    dashboard.state.services.query = dashboard.state.services.query || {};
+    _.defaults(dashboard.state.services.query,{
       list : {},
-      ids : [],
+      ids : []
     });
 
     this.colors = [
@@ -72,90 +72,37 @@ function (angular, _, config, kbn) {
           p.resolve(_.extend(query,{parent:query.id}));
           return p.promise;
         }
-      },
-      regex: {
-        require:">=0.90.12",
-        icon: "icon-circle",
-        resolve: function(query) {
-          // Simply returns itself
-          var p = $q.defer();
-          p.resolve(_.extend(query,{parent:query.id}));
-          return p.promise;
-        }
-      },
-      topN : {
-        require:">=0.90.3",
-        icon: "icon-cog",
-        resolve: function(q) {
-          var suffix = '';
-          if (q.union === 'AND') {
-            suffix = ' AND (' + (q.query||'*') + ')';
-          } else if (q.union === 'OR') {
-            suffix = ' OR (' + (q.query||'*') + ')';
-          }
-
-          var request = ejs.Request().indices(dashboard.indices);
-          // Terms mode
-          request = request
-            .facet(ejs.TermsFacet('query')
-              .field(q.field)
-              .size(q.size)
-              .facetFilter(ejs.QueryFilter(
-                ejs.FilteredQuery(
-                  ejs.QueryStringQuery(q.query || '*'),
-                  filterSrv.getBoolFilter(filterSrv.ids())
-                  )))).size(0);
-
-          var results = request.doSearch();
-          // Like the regex and lucene queries, this returns a promise
-          return results.then(function(data) {
-            var _colors = kbn.colorSteps(q.color,data.facets.query.terms.length);
-            var i = -1;
-            return _.map(data.facets.query.terms,function(t) {
-              ++i;
-              return self.defaults({
-                query  : q.field+':"'+kbn.addslashes('' + t.term)+'"'+suffix,
-                alias  : t.term + (q.alias ? " ("+q.alias+")" : ""),
-                type   : 'lucene',
-                color  : _colors[i],
-                parent : q.id
-              });
-            });
-          });
-        }
       }
     };
 
     self.types = [];
     _.each(self.queryTypes,function(type,name){
-      esVersion.is(type.require).then(function(is) {
         if(is) {
           self.types.push(name);
         }
-      });
     });
 
 
     this.list = function () {
-      return dashboard.current.services.query.list;
+      return dashboard.state.services.query.list;
     };
 
     this.ids = function () {
-      return dashboard.current.services.query.ids;
+      return dashboard.state.services.query.ids;
     };
 
     this.init = function() {
 
-      dashboard.current.services.query.ids =
-        _.intersection(_.map(dashboard.current.services.query.list,
+      dashboard.state.services.query.ids =
+        _.intersection(_.map(dashboard.state.services.query.list,
           function(v,k){return parseInt(k,10);}),self.ids());
 
       // Check each query object, populate its defaults
-      _.each(dashboard.current.services.query.list,function(query) {
+      _.each(dashboard.state.services.query.list,function(query) {
         query = self.defaults(query);
       });
 
-      if (dashboard.current.services.query.ids.length === 0) {
+      if (dashboard.state.services.query.ids.length === 0) {
         self.set({});
       }
     };
@@ -164,8 +111,8 @@ function (angular, _, config, kbn) {
     // the query at that id is updated
     this.set = function(query,id) {
       if(!_.isUndefined(id)) {
-        if(!_.isUndefined(dashboard.current.services.query.list[id])) {
-          _.extend(dashboard.current.services.query.list[id],query);
+        if(!_.isUndefined(dashboard.state.services.query.list[id])) {
+          _.extend(dashboard.state.services.query.list[id],query);
           return id;
         } else {
           return false;
@@ -176,8 +123,8 @@ function (angular, _, config, kbn) {
         query.color = query.color || colorAt(query.id);
         // Then it can get defaults
         query = self.defaults(query);
-        dashboard.current.services.query.list[query.id] = query;
-        dashboard.current.services.query.ids.push(query.id);
+        dashboard.state.services.query.list[query.id] = query;
+        dashboard.state.services.query.ids.push(query.id);
         return query.id;
       }
     };
@@ -190,10 +137,10 @@ function (angular, _, config, kbn) {
     };
 
     this.remove = function(id) {
-      if(!_.isUndefined(dashboard.current.services.query.list[id])) {
-        delete dashboard.current.services.query.list[id];
+      if(!_.isUndefined(dashboard.state.services.query.list[id])) {
+        delete dashboard.state.services.query.list[id];
         // This must happen on the full path also since _.without returns a copy
-        dashboard.current.services.query.ids = _.without(dashboard.current.services.query.ids,id);
+        dashboard.state.services.query.ids = _.without(dashboard.state.services.query.ids,id);
         return true;
       } else {
         return false;
@@ -207,8 +154,6 @@ function (angular, _, config, kbn) {
       {
       case 'lucene':
         return ejs.QueryStringQuery(q.query || '*');
-      case 'regex':
-        return ejs.RegexpQuery('_all',q.query);
       default:
         return false;
       }
@@ -230,15 +175,15 @@ function (angular, _, config, kbn) {
       switch(config.mode)
       {
       case 'all':
-        return _.pluck(_.where(dashboard.current.services.query.list,{enable:true}),'id');
+        return _.pluck(_.where(dashboard.state.services.query.list,{enable:true}),'id');
       case 'pinned':
-        return _.pluck(_.where(dashboard.current.services.query.list,{pin:true,enable:true}),'id');
+        return _.pluck(_.where(dashboard.state.services.query.list,{pin:true,enable:true}),'id');
       case 'unpinned':
-        return _.pluck(_.where(dashboard.current.services.query.list,{pin:false,enable:true}),'id');
+        return _.pluck(_.where(dashboard.state.services.query.list,{pin:false,enable:true}),'id');
       case 'selected':
-        return _.intersection(_.pluck(_.where(dashboard.current.services.query.list,{enable:true}),'id'),config.ids);
+        return _.intersection(_.pluck(_.where(dashboard.state.services.query.list,{enable:true}),'id'),config.ids);
       default:
-        return _.pluck(_.where(dashboard.current.services.query.list,{enable:true}),'id');
+        return _.pluck(_.where(dashboard.state.services.query.list,{enable:true}),'id');
       }
     };
 
@@ -246,9 +191,9 @@ function (angular, _, config, kbn) {
     this.resolve = function() {
       // Find ids of all abstract queries
       // Get a list of resolvable ids, constrast with total list to get abstract ones
-      return $q.all(_.map(dashboard.current.services.query.ids,function(q) {
-        return self.queryTypes[dashboard.current.services.query.list[q].type].resolve(
-          _.clone(dashboard.current.services.query.list[q])).then(function(data){
+      return $q.all(_.map(dashboard.state.services.query.ids,function(q) {
+        return self.queryTypes[dashboard.state.services.query.list[q].type].resolve(
+          _.clone(dashboard.state.services.query.list[q])).then(function(data){
           return data;
         });
       })).then(function(data) {
@@ -261,10 +206,10 @@ function (angular, _, config, kbn) {
     };
 
     var nextId = function() {
-      var idCount = dashboard.current.services.query.ids.length;
+      var idCount = dashboard.state.services.query.ids.length;
       if(idCount > 0) {
         // Make a sorted copy of the ids array
-        var ids = _.sortBy(_.clone(dashboard.current.services.query.ids),function(num){
+        var ids = _.sortBy(_.clone(dashboard.state.services.query.ids),function(num){
           return num;
         });
         return kbn.smallestMissing(ids);
