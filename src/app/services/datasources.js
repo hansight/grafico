@@ -8,7 +8,7 @@ define([
 
     var module = angular.module('kibana.services');
 
-    module.service('datasources', function(ejsResource, $rootScope, $timeout) {
+    module.service('datasources', function($rootScope, $timeout) {
 
         // Save a reference to this
         var self = this;

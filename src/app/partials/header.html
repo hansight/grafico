@@ -6,13 +6,13 @@
 
 
 <li class="navbar-btn" bs-tooltip="'Refresh dashboard'" data-placement="bottom">
-    <a class="link" ng-click="dashboard.refresh()"><span class='icon-refresh'></span></a>
+    <a class="link" ng-click="dashboard.refresh()"><span class='fa fa-refresh'></span></a>
 </li>
 
 <li class="navbar-btn" ng-show="dashboard.state.editable" bs-tooltip="'Save dashboard'" data-placement="bottom">
-  <a class="link" ng-click="dashboard.to_file()"><span class='icon-save'></span></a>
+  <a class="link" ng-click="dashboard.to_file()"><span class='fa fa-save'></span></a>
 </li>
 
 <li class="navbar-btn" ng-show="dashboard.state.editable" bs-tooltip="'Configure dashboard'" data-placement="bottom">
-  <a class="link" config-modal="app/partials/system-editor.html" kbn-model="datasources"><span class='icon-cog'></span></a>
+  <a class="link" config-modal="app/partials/system-editor.html" kbn-model="datasources"><span class='fa fa-cog'></span></a>
 </li>

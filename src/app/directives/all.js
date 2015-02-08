@@ -3,5 +3,6 @@ define([
   './kibana-panel',
   './kibana-simple-panel',
   './config-modal',
-  './grid'
+  './grid',
+  './ng-bs-daterangepicker'
 ], function () {});

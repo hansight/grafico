@@ -1,35 +1,54 @@
-    <div class="editor-row">
-        <div class="section">
-            <h5>Index Settings</h5>
-            <div ng-show="datasource.index.interval != 'none'" class="row-fluid">
-                <div class="editor-option">
-                    <p class="small">
-                        Time stamped indices use your selected time range to create a list of
-                        indices that match a specified timestamp pattern. This can be very
-                        efficient for some data sets (eg, logs) For example, to match the
-                        default logstash index pattern you might use
-                        <code>[logstash-]YYYY.MM.DD</code>. The [] in "[logstash-]" are
-                        important as they instruct Kibana not to treat those letters as a
-                        pattern. You may also specify multiple indices by seperating them with a comma(,).
-                        For example <code>[web-]YYYY.MM.DD,[mail-]YYYY.MM.DD</code>
-                        Please also note that indices should rollover at midnight <strong>UTC</strong>.
-                    </p>
-                    <p class="small">
-                        See <a href="http://momentjs.com/docs/#/displaying/format/">http://momentjs.com/docs/#/displaying/format/</a>
-                        for documentation on date formatting.
-                    </p>
-                </div>
-            </div>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-md-2 control-label">Name</label>
+        <div class="col-md-10"><input type="text" class="form-control input-large"  ng-model="datasource.name" /></div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Address</label>
+        <div class="col-md-6 has-feedback" ng-class="{'has-success': !_.isUndefined(datasource.summary.version)}">
+            <input type="text" class="form-control input-large" ng-model="datasource.address"
+             ng-model-options="{updateOn:'default blur',debounce:{default:500,blur:0}}"
+             ng-change="datasource.validateAddress()"/>
+            <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+            <span class="help-block" style="margin-bottom: 0px" >
+                <b>Version: </b>
+                {{_.isUndefined(datasource.summary.version)? 'checking...' : datasource.summary.version.number}}</span>
+        </div>
+
+        <label class="col-md-1 control-label">Refresh</label>
+        <div class="col-md-3">
+            <select class="form-control input-large" ng-model="datasource.refresh_interval" ng-options="f for f in datasource.refresh_intervals"></select>
         </div>
     </div>
-    <div class="editor-row">
-        <div class="section">
-            <div class="editor-option">
-                <h6>Timestamping</h6><select class="input-small" ng-model="datasource.index.interval" ng-options="f for f in ['none','hour','day','week','month','year']"></select>
-            </div>
-            <div class="editor-option" ng-show="datasource.index.interval != 'none'">
-                <h6>Index pattern <small>Absolutes in []</small></h6>
-                <input type="text" class="input-large" ng-model="datasource.index.pattern">
-            </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Index Pattern</label>
+        <div class="col-md-4"><input type="text" class="form-control input-large" ng-model="datasource.index.pattern" ng-change="datasource.refreshMatched()" /></div>
+        <label class="col-md-1 control-label">Timestamping</label>
+        <div class="col-md-1">
+            <select class="form-control input-large" ng-model="datasource.index.interval" ng-options="f for f in ['none','hour','day','week','month','year']" ng-change="datasource.refreshMatched()"></select>
+        </div>
+        <label class="col-md-1 control-label">Type</label>
+        <div class="col-md-3"><input type="text" class="form-control input-large" ng-model="datasource.index.type" /></div>    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Date Range</label>
+        <div class="col-md-10">
+            <input type="daterange" class="input-prepend input-group form-control input-large" ng-model="datasource.daterange" ng-change="datasource.refreshMatched()" />
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Matched Indices</label>
+        <div class="col-md-10">
+            <div class="form-control" style="min-height:100px; border: 1px solid rgba(0,0,0, 0.1);overflow:auto;">
+                <span class="label label-default" ng-repeat="index in datasource.indices"
+                ng-class="{'label-success':datasource.indexMatches(index)}"
+                style = "margin: 2px 2px 2px 2px">
+                {{index}}</span>
+            </div>
+            </div>
+    </div>
+
+</form>
